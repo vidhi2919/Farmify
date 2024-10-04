@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Prediction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        #sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 18px;
+            color: #333;
+            margin: 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+        }
+
+        nav ul li {
+            margin-bottom: 10px;
+        }
+
+        nav ul li a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        nav ul li a:hover, nav ul li.active a {
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        nav ul li a span {
+            margin-right: 10px;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+
+        .main-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .upload-section {
+            margin-bottom: 20px;
+        }
+
+        .upload-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-choose {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-upload {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-cancel {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .image-preview {
+            display: flex;
+            align-items: center;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .image-preview img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .image-info {
+            flex-grow: 1;
+        }
+
+        .image-remove {
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .result-section {
+            margin-top: 20px;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+
+        .alert-danger {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+            color: #b71c1c;
+        }
+
+        .alert-info {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            color: #0d47a1;
+        }
+
+        .alert-icon {
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            #sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside id="sidebar">
+            <div class="logo">
+                <img src="images/logo2.png" alt="Logo">
+                <h1>FARMIFY</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><span>🏠</span> Dashboard</a></li>
+                    <li><a href="bio.html"><span>♻️</span> Biogas Production</a></li>
+                    <li><a href="soil.html"><span>🧪</span> Soil Testing</a></li>
+                    <li><a href="crop.html"><span>🌱</span> Crop Recommendation</a></li>
+                    <li class="active"><a href="#"><span>🦠</span> Disease Detection</a></li>
+                    <li><a href="growth.html"><span>📈</span> Crop Growth</a></li>
+                    <li><a href="price.html"><span>💰</span> Price Prediction</a></li>
+                    <li><a href="profile.html"><span>👤</span> Profile</a></li>
+                    <li><a href="login.html"><span>🔐</span> Sign In</a></li>
+                    <li><a href="signup.html"><span>📝</span> SignUp</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main>
+            <div class="main-content">
+                <h2>Disease Prediction</h2>
+                <div class="upload-section">
+                    <p>Please upload a picture of your crop from the top</p>
+                    <div class="upload-buttons">
+                        <button class="btn btn-choose" onclick="document.getElementById('fileInput').click()">+ Choose</button>
+                        <button class="btn btn-upload" onclick="uploadImage()">↑ Upload</button>
+                        <button class="btn btn-cancel" onclick="cancelUpload()">✕ Cancel</button>
+                    </div>
+                    <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="previewImage(event)">
+                    <div id="imagePreview" class="image-preview" style="display: none;">
+                        <img id="preview" src="" alt="Preview">
+                        <div class="image-info">
+                            <div id="fileName"></div>
+                            <div id="fileSize"></div>
+                        </div>
+                        <button class="image-remove" onclick="removeImage()">✕</button>
+                    </div>
+                </div>
+                <div class="result-section" id="resultSection"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview').src = e.target.result;
+                    document.getElementById('fileName').textContent = file.name;
+                    document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(2) + ' KB';
+                    document.getElementById('imagePreview').style.display = 'flex';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function uploadImage() {
+            const file = document.getElementById('fileInput').files[0];
+            if (file) {
+                // Here you would normally send the file to your server or ML model API
+                // For this example, we'll just simulate a response
+                simulateDiseaseDetection(file);
+            } else {
+                alert('Please select an image file.');
+            }
+        }
+
+        function cancelUpload() {
+            document.getElementById('fileInput').value = '';
+            document.getElementById('imagePreview').style.display = 'none';
+        }
+
+        function removeImage() {
+            cancelUpload();
+        }
+
+        function simulateDiseaseDetection(file) {
+            // Simulating API call delay
+            setTimeout(() => {
+                const resultSection = document.getElementById('resultSection');
+                resultSection.innerHTML = `
+                    <div class="alert alert-danger">
+                        <span class="alert-icon">⚠️</span>
+                        We detected Corn-Common-rust in your crop with 99.9638% confidence
+                    </div>
+                    <div class="alert alert-info">
+                        <span class="alert-icon">ℹ️</span>
+                        Please visit http://ipm.ucanr.edu/PMG/r113100811.html to learn more about this disease and how to prevent it
+                    </div>
+                `;
+            }, 2000); // Simulating 2 second delay for API response
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGRI-SPHERE Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <aside id="sidebar">
+            <div class="logo">
+                <img src="images/logo2.png" alt="Logo">
+                <h1>FARMIFY</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li class="active"><a href="index.html"><span class="icon">🏠</span>  Dashboard</a></li>
+                    <li ><a href="bio.html"><span>♻️</span> Biogas Production</a></li>
+                    <li><a href="soil.html"><span class="icon-soil">🧪</span> Soil Testing</a></li>
+                    <li><a href="crop.html"><span class="icon-crop">🌱</span> Crop Recommendation</a></li>
+                    <li><a href="detect.html"><span class="icon-disease">🦠</span> Disease Detection</a></li>
+                    <li><a href="growth.html"><span class="icon-growth">📈</span> Crop Growth</a></li>
+                    <li><a href="price.html"><span class="icon-price">💰</span> Price Prediction</a></li>
+                    <li><a href="profile.html"><span class="icon">👤</span> Profile</a></li>
+                    <li><a href="login.html"><span class="icon-sign">🔐</span> Sign In</a></li>
+                    <li><a href="signup.html"><span class="icon-signup">📝</span> SignUp</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main>
+            <header>
+                <button id="sidebar-toggle">☰</button>
+                <div class="header-icons">
+                    <button class="icon-button"><i class="icon-print"></i></button>
+                    <button class="icon-button"><i class="icon-settings"></i></button>
+                    <button class="icon-button"><i class="icon-user"></i></button>
+                </div>
+            </header>
+            <div class="location-input">
+                <input type="text" id="location" placeholder="Enter location">
+                <button id="fetch-weather">Fetch Weather</button>
+            </div>
+            <div id="loading" style="display: none;">Loading...</div>
+            <div class="dashboard">
+                <section class="chart">
+                    <h2>Temperature Chart</h2>
+                    <canvas id="temperatureChart"></canvas>
+                    <div class="chart-buttons">
+                        <button>Today</button>
+                        <button>This Week</button>
+                    </div>
+                </section>
+                <section class="chart">
+                    <h2>Humidity Chart</h2>
+                    <canvas id="humidityChart"></canvas>
+                </section>
+                <section class="chart">
+                    <h2>Rainfall Chart</h2>
+                    <canvas id="rainfallChart"></canvas>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

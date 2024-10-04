@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>soil testing</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            font-family: Arial, sans-serif;
+            height: 100%;
+            background-color: #f0f2f5;
+        }
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        #sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        .logo h1 {
+            font-size: 18px;
+            color: #333;
+            margin: 0;
+        }
+        nav ul {
+            list-style-type: none;
+        }
+        nav ul li {
+            margin-bottom: 10px;
+        }
+        nav ul li a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+        nav ul li a:hover, nav ul li.active a {
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        nav ul li a span {
+            margin-right: 10px;
+        }
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .map-container {
+            flex-grow: 1;
+            position: relative;
+        }
+        #map {
+            height: 100%;
+        }
+        .coordinates {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: white;
+            padding: 5px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+        .search-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .search-container input {
+            margin-right: 5px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .search-container button {
+            padding: 5px 10px;
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .search-container button:hover {
+            background-color: #5b4bc4;
+        }
+        .leaflet-touch .leaflet-bar a {
+            width: 22px;
+            height: 22px;
+            line-height: 22px;
+        }
+        .leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out {
+            font-size: 15px;
+        }
+        .leaflet-touch .leaflet-bar {
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            background-clip: padding-box;
+            margin-top: 59px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            #sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside id="sidebar">
+            <div class="logo">
+                <img src="images/logo2.png" alt="Logo">
+                <h1>FARMIFY</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><span class="icon">🏠</span> Dashboard</a></li>
+                    <li><a href="bio.html"><span>♻️</span> Biogas Production</a></li>
+                    <li class="active"><a href="soil.html"><span class="icon-soil">🧪</span> Soil Testing</a></li>
+                    <li><a href="crop.html"><span class="icon-crop">🌱</span> Crop Recommendation</a></li>
+                    <li><a href="detect.html"><span class="icon-disease">🦠</span> Disease Detection</a></li>
+                    <li><a href="growth.html"><span class="icon-growth">📈</span> Crop Growth</a></li>
+                    <li><a href="price.html"><span class="icon-price">💰</span> Price Prediction</a></li>
+                    <li><a href="profile.html"><span class="icon-profile">👤</span> Profile</a></li>
+                    <li><a href="login.html"><span class="icon-sign">🔐</span> Sign In</a></li>
+                    <li><a href="signup.html"><span class="icon-signup">📝</span> Sign Up</a></li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <div class="content">
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="coordinates" id="coordinates"></div>
+                <div class="search-container">
+                    <input type="text" id="lat" placeholder="Latitude">
+                    <input type="text" id="lng" placeholder="Longitude">
+                    <button onclick="searchLocation()">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var map = L.map('map').setView([19.0033, 72.8625], 13);
+        var marker;
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        function updateCoordinates(e) {
+            var coord = e.latlng;
+            var lat = coord.lat.toFixed(6);
+            var lng = coord.lng.toFixed(6);
+            var zoom = map.getZoom();
+            document.getElementById('coordinates').innerHTML = 
+                'Latitude: ' + lat + ' | Longitude: ' + lng + ' | Zoom: ' + zoom;
+        }
+
+        map.on('mousemove', updateCoordinates);
+
+        function searchLocation() {
+            var lat = parseFloat(document.getElementById('lat').value);
+            var lng = parseFloat(document.getElementById('lng').value);
+
+            if (isNaN(lat) || isNaN(lng)) {
+                alert("Please enter valid latitude and longitude values.");
+                return;
+            }
+
+            if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+                alert("Latitude must be between -90 and 90, and longitude must be between -180 and 180.");
+                return;
+            }
+
+            map.setView([lat, lng], 13);
+
+            if (marker) {
+                map.removeLayer(marker);
+            }
+
+            marker = L.marker([lat, lng]).addTo(map);
+            marker.bindPopup("Selected Location").openPopup();
+        }
+    </script>
+</body>
+</html>

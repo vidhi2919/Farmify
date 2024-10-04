@@ -1,0 +1,180 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+#sidebar {
+    width: 250px;
+    background-color: #ffffff;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+#sidebar.closed {
+    width: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.logo h1 {
+    font-size: 18px;
+    color: #333;
+}
+
+nav ul {
+    list-style-type: none;
+}
+
+nav ul li {
+    margin-bottom: 10px;
+}
+
+nav ul li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #666;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+nav ul li a:hover, nav ul li.active a {
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+nav ul li a i {
+    margin-right: 10px;
+}
+
+main {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+#sidebar-toggle {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.header-icons {
+    display: flex;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: row;
+    gap: 20px; 
+}
+
+.chart {
+    background-color: #ffffff;
+    border-radius: 10px;
+    flex: 1; /* Allow charts to grow and shrink */
+    min-width: 300px;
+    max-width: 500px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chart h2 {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.chart-buttons {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+.chart-buttons button {
+    background-color: #6c5ce7;
+    color: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.chart-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; 
+}
+
+#profile-menu {
+    position: relative;
+}
+
+#profile-menu .submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 1000;
+}
+
+#profile-menu:hover .submenu {
+    display: block;
+}
+
+#logout {
+    background-color: #ff4757;
+    color: #ffffff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+canvas {
+    width: 100% !important; /* Make canvas take full width of its container */
+    height: 300px !important; /* Set a fixed height for all charts */
+}

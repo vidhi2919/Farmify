@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        #sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 18px;
+            color: #333;
+            margin: 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+        }
+
+        nav ul li {
+            margin-bottom: 10px;
+        }
+
+        nav ul li a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        nav ul li a:hover, nav ul li.active a {
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        nav ul li a span {
+            margin-right: 10px;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .recommendation-form {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .recommendation-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background-color: #6c5ce7;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-submit:hover {
+            background-color: #5b4bc4;
+        }
+
+        #recommendation-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #e7f3ff;
+            border: 1px solid #b3d7ff;
+            color: #004085;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            #sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside id="sidebar">
+            <div class="logo">
+                <img src="images/logo2.png" alt="Logo">
+                <h1>FARMIFY</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><span class="icon">🏠</span> Dashboard</a></li>
+                    <li><a href="bio.html"><span>♻️</span> Biogas Production</a></li>
+                    <li><a href="soil.html"><span class="icon">🧪</span> Soil Testing</a></li>
+                    <li class="active"><a href="#"><span class="icon">🌱</span> Crop Recommendation</a></li>
+                    <li><a href="detect.html"><span class="icon">🦠</span> Disease Detection</a></li>
+                    <li><a href="growth.html"><span class="icon">📈</span> Crop Growth</a></li>
+                    <li><a href="price.html"><span class="icon">💰</span> Price Prediction</a></li>
+                    <li><a href="profile.html"><span class="icon">👤</span> Profile</a></li>
+                    <li><a href="login.html"><span class="icon">🔐</span> Sign In</a></li>
+                    <li><a href="signup.html"><span class="icon">📝</span> SignUp</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main>
+            <form class="recommendation-form" id="crop-form">
+                <h2>Crop Recommendation</h2>
+                <div class="form-group">
+               <div class="form-row">
+                <div class="form-group">
+                    <label for="nitrogen">Nitrogen</label>
+                    <input type="number" id="nitrogen" name="nitrogen" required>
+                </div>
+                <div class="form-group">
+                    <label for="phosphorus">Phosphorus</label>
+                    <input type="number" id="phosphorus" name="phosphorus" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="potassium">Potassium</label>
+                    <input type="number" id="potassium" name="potassium" required>
+                </div>
+                <div class="form-group">
+                    <label for="ph">pH Level</label>
+                    <input type="number" id="ph" name="ph" step="0.1" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="temperature">Temperature</label>
+                    <input type="number" id="temperature" name="temperature" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="humidity">Humidity</label>
+                    <input type="number" id="humidity" name="humidity" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="rainfall">Rainfall</label>
+                <input type="number" id="rainfall" name="rainfall" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Submit Data</button>
+            <div id="recommendation-result"></div>
+            </form>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('crop-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+
+            
+            // For now, we'll just set a dummy recommendation
+            const recommendation = "Coffee is the best crop for your conditions.";
+
+            // Display the recommendation
+            const resultDiv = document.getElementById('recommendation-result');
+            resultDiv.textContent = recommendation;
+            resultDiv.style.display = 'block';
+
+            // In a real application, you'd replace the above lines with an API call:
+            /*
+            fetch('/api/recommend-crop', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultDiv = document.getElementById('recommendation-result');
+                resultDiv.textContent = data.recommendation;
+                resultDiv.style.display = 'block';
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+            */
+        });
+    </script>
+</body>
+</html>

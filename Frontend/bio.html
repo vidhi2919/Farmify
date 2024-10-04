@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biogas Production Prediction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        #sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 18px;
+            color: #333;
+            margin: 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+        }
+
+        nav ul li {
+            margin-bottom: 10px;
+        }
+
+        nav ul li a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        nav ul li a:hover, nav ul li.active a {
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+
+        .main-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group select,
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .flex-container .form-group {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .flex-container .form-group:last-child {
+            margin-right: 0;
+        }
+
+        .btn-submit {
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background-color: #5b4bc4;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e7f9f0;
+            border-left: 4px solid #2ecc71;
+            border-radius: 4px;
+            color: #27ae60;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            #sidebar {
+                width: 100%;
+            }
+
+            .flex-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside id="sidebar">
+            <div class="logo">
+                <img src="images/logo2.png" alt="Logo">
+                <h1>FARMIFY</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><span>🏠</span> Dashboard</a></li>
+                    <li class="active"><a href="#"><span>♻️</span> Biogas Production</a></li>
+                    <li><a href="soil.html"><span>🧪</span> Soil Testing</a></li>
+                    <li><a href="crop.html"><span>🌱</span> Crop Recommendation</a></li>
+                    <li><a href="detect.html"><span>🦠</span> Disease Detection</a></li>
+                    <li><a href="growth.html"><span>📈</span> Crop Growth</a></li>
+                    <li><a href="price.html"><span>💰</span> Price Prediction</a></li>
+                    <li><a href="profile.html"><span>👤</span> Profile</a></li>
+                    <li><a href="login.html"><span>🔐</span> Sign In</a></li>
+                    <li><a href="signup.html"><span>📝</span> SignUp</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main>
+            <div class="main-content">
+                <h2>Biogas Production Prediction</h2>
+                <form id="biogasPredictionForm">
+                    <div class="flex-container">
+                        <div class="form-group">
+                            <label for="wasteType">Waste Type</label>
+                            <select id="wasteType" required>
+                                <option value="">Select waste type</option>
+                                <option value="food">Livestock Manure</option>
+                                <option value="agricultural">Crop Residue</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cropResidual">Crop Residual (kg)</label>
+                            <input type="number" id="cropResidual" required min="0" step="0.1">
+                        </div>
+                    </div>
+                    <div class="flex-container">
+                        <div class="form-group">
+                            <label for="manureVolume">Manure Volume (liters)</label>
+                            <input type="number" id="manureVolume" required min="0" step="0.1">
+                        </div>
+                        <div class="form-group">
+                            <label for="phLevel">pH Level</label>
+                            <input type="number" id="phLevel" required min="0" max="14" step="0.1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="retention">Retention Time (days)</label>
+                        <input type="number" id="retention" required min="0">
+                    </div>
+                    <button type="submit" class="btn-submit">Predict Biogas Production</button>
+                </form>
+                <div id="result" class="result"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('biogasPredictionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const wasteType = document.getElementById('wasteType').value;
+            const cropResidual = parseFloat(document.getElementById('cropResidual').value);
+            const manureVolume = parseFloat(document.getElementById('manureVolume').value);
+            const phLevel = parseFloat(document.getElementById('phLevel').value);
+            const retention = parseFloat(document.getElementById('retention').value);
+
+            simulateBiogasPrediction(wasteType, cropResidual, manureVolume, phLevel, retention);
+        });
+        
+        // async function predictBiogasProduction(wasteType, cropResidual, manureVolume, phLevel, retention) {
+        //     const apiUrl = 'http://127.0.0.1:5000'; //NEED TO ADD API GENERATED FROM BACKEND
+        //     const resultElement = document.getElementById('result');
+
+        //     // Show loading message
+        //     resultElement.textContent = 'Calculating...';
+        //     resultElement.style.display = 'block';
+
+        //     try {
+        //         const response = await fetch(apiUrl, {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //             },
+        //             body: JSON.stringify({
+        //                 waste_type: wasteType,
+        //                 crop_residual: cropResidual,
+        //                 manure_volume: manureVolume,
+        //                 ph_level: phLevel,
+        //                 retention: retention
+        //             }),
+        //         });
+
+        //         if (!response.ok) {
+        //             throw new Error(`HTTP error! status: ${response.status}`);
+        //         }
+
+        //         const data = await response.json();
+        //         resultElement.textContent = `Estimated Biogas Production: ${data.biogas_production.toFixed(2)} m³`;
+        //     } catch (error) {
+        //         console.error('Error:', error);
+        //         resultElement.textContent = 'An error occurred while predicting biogas production. Please try again.';
+        //     }
+        // }
+        function simulateBiogasPrediction(wasteType, cropResidual, manureVolume, phLevel, retention) {
+            // Simulating API call delay
+            setTimeout(() => {
+                // This is a placeholder calculation. Replace with your actual model when ready.
+                const biogasProduced = (cropResidual * 0.3 + manureVolume * 0.5) * (phLevel / 7) * (retention / 30);
+                const resultElement = document.getElementById('result');
+                resultElement.textContent = `Estimated Biogas Production: ${biogasProduced.toFixed(2)} m³`;
+                resultElement.style.display = 'block';
+            }, 1500); // Simulating 1.5 second delay for API response
+        }
+    </script>
+</body>
+</html>

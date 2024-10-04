@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Updates</title>
+    <link rel="stylesheet" href="growth.css">
+</head>
+<body>
+    <div class="container">
+        <aside id="sidebar">
+            <div class="logo">
+                <img src="images/logo2.png" alt="Logo">
+                <h1>FARMIFY</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><span class="icon">🏠</span> Dashboard</a></li>
+                    <li><a href="bio.html"><span>♻️</span> Biogas Production</a></li>
+                    <li><a href="soil.html"><span class="icon-soil">🧪</span> Soil Testing</a></li>
+                    <li><a href="crop.html"><span class="icon-crop">🌱</span> Crop Recommendation</a></li>
+                    <li><a href="detect.html"><span class="icon-disease">🦠</span> Disease Detection</a></li>
+                    <li class="active"><a href="#"><span class="icon-growth">📈</span> Crop Growth</a></li>
+                    <li><a href="price.html"><span class="icon-price">💰</span> Price Prediction</a></li>
+                    <li><a href="price.html"><span class="icon-profile">👤</span> Profile</a></li>
+                    <li><a href="login.html"><span class="icon-sign">🔐</span> Sign In</a></li>
+                    <li><a href="signup.html"><span class="icon-signup">📝</span> SignUp</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main>
+            <h1>Weekly Updates, Get Rewards!</h1>
+            <div class="upload-section">
+                <select id="cropSelect">
+                    <option value="">New Crop</option>
+                    <!-- Add more crop options here -->
+                </select>
+            </div>
+            <div class="weeks-container">
+                <div class="week-card" id="week1">
+                    <h3>Week 1</h3>
+                    <div class="image-container">
+                        <img src="images/week1.avif" alt="Default Week 1" class="default-image">
+                        <div class="upload-overlay">PHOTO NOT UPLOADED</div>
+                    </div>
+                    <p>Points: <span class="points">0</span></p>
+                    <p>Height: <span class="height">0</span> cm</p>
+                    <p class="status not-uploaded">NOT UPLOADED</p>
+                    <div class="actions">
+                        <button class="action-btn download" disabled>⬇️</button>
+                        <button class="action-btn upload">⬆️</button>
+                    </div>
+                </div>
+                <div class="week-card" id="week2">
+                    <h3>Week 2</h3>
+                    <div class="image-container">
+                        <img src="images/week2.avif" alt="Default Week 2" class="default-image">
+                        <div class="upload-overlay">PHOTO NOT UPLOADED</div>
+                    </div>
+                    <p>Points: <span class="points">0</span></p>
+                    <p>Height: <span class="height">0</span> cm</p>
+                    <p class="status not-uploaded">NOT UPLOADED</p>
+                    <div class="actions">
+                        <button class="action-btn download" disabled>⬇️</button>
+                        <button class="action-btn upload">⬆️</button>
+                    </div>
+                </div>
+                <div class="week-card" id="week3">
+                    <h3>Week 3</h3>
+                    <div class="image-container">
+                        <img src="images/week3.avif" alt="Default Week 3" class="default-image">
+                        <div class="upload-overlay">PHOTO NOT UPLOADED</div>
+                    </div>
+                    <p>Points: <span class="points">0</span></p>
+                    <p>Height: <span class="height">0</span> cm</p>
+                    <p class="status not-uploaded">NOT UPLOADED</p>
+                    <div class="actions">
+                        <button class="action-btn download" disabled>⬇️</button>
+                        <button class="action-btn upload">⬆️</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="growth.js"></script>
+</body>
+</html>

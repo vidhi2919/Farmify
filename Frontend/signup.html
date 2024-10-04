@@ -1,0 +1,222 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up to Agri-sphere</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <!-- <script src="signup.js" defer></script> -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        #sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 18px;
+            color: #333;
+            margin: 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+        }
+
+        nav ul li {
+            margin-bottom: 10px;
+        }
+
+        nav ul li a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        nav ul li a:hover, nav ul li.active a {
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        nav ul li a span {
+            margin-right: 10px;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .signup-form {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .signup-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form-group.remember {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group.remember input {
+            width: auto;
+            margin-right: 10px;
+        }
+
+        .btn-signup {
+            width: 100%;
+            padding: 10px;
+            background-color: #6c5ce7;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-signup:hover {
+            background-color: #5b4bc4;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .login-link a {
+            color: #6c5ce7;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            #sidebar {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside id="sidebar">
+            <div class="logo">
+                <img src="images/logo2.png" alt="Logo">
+                <h1>FARMIFY</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><span class="icon">🏠</span>  Dashboard</a></li>
+                    <li><a href="bio.html"><span>♻️</span> Biogas Production</a></li>
+                    <li><a href="soil.html"><span class="icon-soil">🧪</span> Soil Testing</a></li>
+                    <li><a href="crop.html"><span class="icon-crop">🌱</span> Crop Recommendation</a></li>
+                    <li><a href="detect.html"><span class="icon-disease">🦠</span> Disease Detection</a></li>
+                    <li><a href="growth.html"><span class="icon-growth">📈</span> Crop Growth</a></li>
+                    <li><a href="price.html"><span class="icon-price">💰</span> Price Prediction</a></li>
+                    <li><a href="profile.html"><span class="icon-profile">👤</span> Profile</a></li>
+                    <li><a href="login.html"><span class="icon-sign">🔐</span> Sign In</a></li>
+                    <li class="active"><a href="signup.html"><span class="icon-signup">📝</span> SignUp</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main>
+            <form class="signup-form" id="signupForm">
+                <h2>Sign Up to Farmify!</h2>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="mobile">Mobile Number</label>
+                    <input type="tel" id="mobile" name="mobile" required>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group remember">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+                <button type="submit" class="btn-signup" >Sign Up</button>
+                <div class="login-link">
+                    Already have an account? <a href="login.html">Sign in here!</a>
+                </div>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

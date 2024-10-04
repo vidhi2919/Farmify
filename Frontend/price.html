@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Price Prediction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        #sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            font-size: 18px;
+            color: #333;
+            margin: 0;
+        }
+
+        nav ul {
+            list-style-type: none;
+        }
+
+        nav ul li {
+            margin-bottom: 10px;
+        }
+
+        nav ul li a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #666;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        nav ul li a:hover, nav ul li.active a {
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+
+        .main-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group select,
+        .form-group input[type="date"],
+        .form-group input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .flex-container .form-group {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .flex-container .form-group:last-child {
+            margin-right: 0;
+        }
+
+        .btn-submit {
+            background-color: #6c5ce7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background-color: #5b4bc4;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e7f9f0;
+            border-left: 4px solid #2ecc71;
+            border-radius: 4px;
+            color: #27ae60;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            #sidebar {
+                width: 100%;
+            }
+
+            .flex-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside id="sidebar">
+            <div class="logo">
+                <img src="images/logo2.png" alt="Logo">
+                <h1>FARMIFY</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><span>🏠</span> Dashboard</a></li>
+                    <li><a href="bio.html"><span>♻️</span> Biogas Production</a></li>
+                    <li><a href="soil.html"><span>🧪</span> Soil Testing</a></li>
+                    <li><a href="crop.html"><span>🌱</span> Crop Recommendation</a></li>
+                    <li><a href="detect.html"><span>🦠</span> Disease Detection</a></li>
+                    <li><a href="growth.html"><span>📈</span> Crop Growth</a></li>
+                    <li class="active"><a href="#"><span>💰</span> Price Prediction</a></li>
+                    <li><a href="profile.html"><span>👤</span> Profile</a></li>
+                    <li><a href="login.html"><span>🔐</span> Sign In</a></li>
+                    <li><a href="signup.html"><span>📝</span> SignUp</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main>
+            <div class="main-content">
+                <h2>Crop Selection</h2>
+                <form id="pricePredictionForm">
+                    <div class="flex-container">
+                        <div class="form-group">
+                            <label for="crop">Select the crop</label>
+                            <select id="crop" required>
+                                <option value="">Select a crop</option>
+                                <option value="maize">Maize</option>
+                                <option value="rice">Rice</option>
+                                <option value="wheat">Wheat</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="rainfall">Rainfall (mm)</label>
+                            <input type="number" id="rainfall" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Submit Data</button>
+                </form>
+                <div id="result" class="result"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('pricePredictionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const crop = document.getElementById('crop').value;
+            const date = document.getElementById('date').value;
+            const rainfall = document.getElementById('rainfall').value;
+
+            // Here you would normally send this data to your API
+            // For this example, we'll simulate a response
+            simulatePricePrediction(crop, date, rainfall);
+        });
+
+        function simulatePricePrediction(crop, date, rainfall) {
+            // Simulating API call delay
+            setTimeout(() => {
+                const price = (Math.random() * 1000 + 500).toFixed(2);
+                const resultElement = document.getElementById('result');
+                resultElement.textContent = `₹ ${price} per quintal is the price for your crop`;
+                resultElement.style.display = 'block';
+            }, 1500); // Simulating 1.5 second delay for API response
+        }
+    </script>
+</body>
+</html>
